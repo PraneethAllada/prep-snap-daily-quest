@@ -15,10 +15,15 @@ import {
   LogOut, 
   Edit3,
   Mail,
-  Phone
+  Phone,
+  ArrowLeft
 } from "lucide-react";
 
-const Settings = () => {
+interface SettingsProps {
+  onGoBack: () => void;
+}
+
+const Settings = ({ onGoBack }: SettingsProps) => {
   const [darkMode, setDarkMode] = useState(false);
   const [notifications, setNotifications] = useState(true);
   const [dailyReminder, setDailyReminder] = useState(true);
@@ -228,19 +233,31 @@ const Settings = () => {
         </CardContent>
       </Card>
 
-      {/* Logout */}
-      <Card className="border-error">
-        <CardContent className="p-4">
-          <Button
-            variant="destructive"
-            className="w-full h-11"
-            onClick={handleLogout}
-          >
-            <LogOut className="w-5 h-5 mr-2" />
-            Logout
-          </Button>
-        </CardContent>
-      </Card>
+      {/* Navigation & Logout */}
+      <div className="space-y-3">
+        <Button 
+          variant="outline" 
+          className="w-full h-12 text-base font-medium"
+          size="lg"
+          onClick={onGoBack}
+        >
+          <ArrowLeft className="w-5 h-5 mr-2" />
+          Back to Dashboard
+        </Button>
+        
+        <Card className="border-error">
+          <CardContent className="p-4">
+            <Button
+              variant="destructive"
+              className="w-full h-11"
+              onClick={handleLogout}
+            >
+              <LogOut className="w-5 h-5 mr-2" />
+              Logout
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
 
       {/* App Info */}
       <div className="text-center text-sm text-muted-foreground space-y-1">

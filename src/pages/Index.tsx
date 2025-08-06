@@ -7,21 +7,40 @@ import QuizResults from "./QuizResults";
 import Dashboard from "./Dashboard";
 import Settings from "./Settings";
 import EmptyState from "./EmptyState";
+import BottomNavigation from "@/components/BottomNavigation";
 
 const Index = () => {
   const [currentScreen, setCurrentScreen] = useState<string>("onboarding");
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [quizCompleted, setQuizCompleted] = useState(false);
+
+  const handleNavigation = (screen: string) => {
+    setCurrentScreen(screen);
+  };
+
+  const handleLogin = () => {
+    setIsAuthenticated(true);
+    setCurrentScreen("dashboard");
+  };
+
+  const handleQuizComplete = () => {
+    setQuizCompleted(true);
+    setCurrentScreen("results");
+  };
 
   const screens = {
-    onboarding: <Onboarding />,
-    auth: <Auth />,
-    "daily-quiz": <DailyQuiz />,
-    results: <QuizResults />,
-    dashboard: <Dashboard />,
-    settings: <Settings />,
-    "empty-missed": <EmptyState type="missed-day" />,
-    "empty-no-quiz": <EmptyState type="no-quiz" />,
-    "empty-first-time": <EmptyState type="first-time" />
+    onboarding: <Onboarding onGetStarted={() => setCurrentScreen("auth")} />,
+    auth: <Auth onLogin={handleLogin} />,
+    "daily-quiz": <DailyQuiz onQuizComplete={handleQuizComplete} />,
+    results: <QuizResults onGoToDashboard={() => setCurrentScreen("dashboard")} />,
+    dashboard: <Dashboard onStartQuiz={() => setCurrentScreen("daily-quiz")} />,
+    settings: <Settings onGoBack={() => setCurrentScreen("dashboard")} />,
+    "empty-missed": <EmptyState type="missed-day" onStartQuiz={() => setCurrentScreen("daily-quiz")} />,
+    "empty-no-quiz": <EmptyState type="no-quiz" onStartQuiz={() => setCurrentScreen("daily-quiz")} />,
+    "empty-first-time": <EmptyState type="first-time" onStartQuiz={() => setCurrentScreen("daily-quiz")} />
   };
+
+  const showBottomNav = isAuthenticated && !["onboarding", "auth"].includes(currentScreen);
 
   return (
     <div className="min-h-screen bg-background">
@@ -44,9 +63,17 @@ const Index = () => {
       </div>
 
       {/* Current Screen */}
-      <div className="pt-0">
+      <div className={showBottomNav ? "pb-20" : ""}>
         {screens[currentScreen as keyof typeof screens]}
       </div>
+
+      {/* Bottom Navigation */}
+      {showBottomNav && (
+        <BottomNavigation 
+          currentScreen={currentScreen} 
+          onNavigate={handleNavigation} 
+        />
+      )}
     </div>
   );
 };

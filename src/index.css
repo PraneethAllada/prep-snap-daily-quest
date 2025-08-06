@@ -165,4 +165,9 @@ Base: Monochrome palette with soft accent colors for interactions
   .quiz-option.incorrect {
     @apply border-red-400 bg-red-50 text-red-800;
   }
+
+  /* Safe area for mobile devices */
+  .safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
 }

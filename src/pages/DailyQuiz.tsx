@@ -32,7 +32,11 @@ const mockQuiz = [
   }
 ];
 
-const DailyQuiz = () => {
+interface DailyQuizProps {
+  onQuizComplete: () => void;
+}
+
+const DailyQuiz = ({ onQuizComplete }: DailyQuizProps) => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [showFeedback, setShowFeedback] = useState(false);
@@ -76,6 +80,7 @@ const DailyQuiz = () => {
     if (isLastQuestion) {
       // Navigate to results screen
       console.log("Quiz completed!", { score, total: mockQuiz.length });
+      onQuizComplete();
     } else {
       setCurrentQuestion(currentQuestion + 1);
       setSelectedAnswer(null);

@@ -24,12 +24,18 @@ const onboardingSlides = [
   }
 ];
 
-const Onboarding = () => {
+interface OnboardingProps {
+  onGetStarted: () => void;
+}
+
+const Onboarding = ({ onGetStarted }: OnboardingProps) => {
   const [currentSlide, setCurrentSlide] = useState(0);
 
   const nextSlide = () => {
     if (currentSlide < onboardingSlides.length - 1) {
       setCurrentSlide(currentSlide + 1);
+    } else {
+      onGetStarted();
     }
   };
 

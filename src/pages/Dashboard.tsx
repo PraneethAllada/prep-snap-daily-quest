@@ -26,7 +26,11 @@ const mockData = {
   monthlyProgress: 78
 };
 
-const Dashboard = () => {
+interface DashboardProps {
+  onStartQuiz: () => void;
+}
+
+const Dashboard = ({ onStartQuiz }: DashboardProps) => {
   const { todayQuiz, streak, weeklyStats, recentScores, monthlyProgress } = mockData;
 
   const getStreakColor = () => {
@@ -70,7 +74,7 @@ const Dashboard = () => {
           </div>
           
           {!todayQuiz.completed && (
-            <Button className="w-full" size="lg">
+            <Button className="w-full" size="lg" onClick={onStartQuiz}>
               Start Today's Quiz
               <ArrowRight className="w-4 h-4 ml-2" />
             </Button>

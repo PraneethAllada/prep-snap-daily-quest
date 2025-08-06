@@ -6,7 +6,11 @@ import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Mail, Lock, User } from "lucide-react";
 
-const Auth = () => {
+interface AuthProps {
+  onLogin: () => void;
+}
+
+const Auth = ({ onLogin }: AuthProps) => {
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -16,11 +20,13 @@ const Auth = () => {
     e.preventDefault();
     // Handle authentication logic here
     console.log(isLogin ? "Login" : "Signup", { email, password, name });
+    onLogin();
   };
 
   const handleGoogleAuth = () => {
     // Handle Google authentication
     console.log("Google auth");
+    onLogin();
   };
 
   return (

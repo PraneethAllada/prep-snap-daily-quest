@@ -14,7 +14,11 @@ const mockResults = {
   previousBest: 8
 };
 
-const QuizResults = () => {
+interface QuizResultsProps {
+  onGoToDashboard: () => void;
+}
+
+const QuizResults = ({ onGoToDashboard }: QuizResultsProps) => {
   const { score, total, streak, timeSpent, accuracy, previousBest } = mockResults;
   const percentage = Math.round((score / total) * 100);
   const isNewRecord = score > previousBest;
@@ -137,6 +141,7 @@ const QuizResults = () => {
         <Button 
           className="w-full h-12 text-base font-medium"
           size="lg"
+          onClick={onGoToDashboard}
         >
           Continue to Dashboard
         </Button>

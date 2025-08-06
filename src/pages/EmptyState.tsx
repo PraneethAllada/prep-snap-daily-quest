@@ -1,12 +1,13 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Calendar, Target, ArrowRight } from "lucide-react";
+import { Calendar, Target, ArrowRight, Play } from "lucide-react";
 
 interface EmptyStateProps {
   type: "missed-day" | "no-quiz" | "first-time";
+  onStartQuiz: () => void;
 }
 
-const EmptyState = ({ type = "no-quiz" }: EmptyStateProps) => {
+const EmptyState = ({ type = "no-quiz", onStartQuiz }: EmptyStateProps) => {
   const getContent = () => {
     switch (type) {
       case "missed-day":
@@ -15,7 +16,7 @@ const EmptyState = ({ type = "no-quiz" }: EmptyStateProps) => {
           title: "You missed yesterday",
           subtitle: "Your streak was broken, but don't worry!",
           description: "Every expert was once a beginner. Start fresh today and build a new streak. Consistency matters more than perfection.",
-          buttonText: "Start Fresh Today",
+          buttonText: "Start Today's Quiz",
           tips: [
             "Set a daily reminder to maintain your streak",
             "Even 10 minutes of daily practice makes a difference",
@@ -29,7 +30,7 @@ const EmptyState = ({ type = "no-quiz" }: EmptyStateProps) => {
           title: "Welcome to PrepSnap!",
           subtitle: "Your UPSC journey starts here",
           description: "Get ready to build a strong foundation with daily practice. Each quiz is carefully curated to help you succeed.",
-          buttonText: "Take Your First Quiz",
+          buttonText: "Start Today's Quiz",
           tips: [
             "Take the quiz at the same time daily",
             "Review explanations for better understanding", 
@@ -43,7 +44,7 @@ const EmptyState = ({ type = "no-quiz" }: EmptyStateProps) => {
           title: "No quiz available yet",
           subtitle: "Today's quiz will be ready soon",
           description: "Our daily quizzes are available every morning at 6:00 AM. Come back then to continue your preparation journey.",
-          buttonText: "View Dashboard",
+          buttonText: "Start Today's Quiz",
           tips: [
             "Quizzes are released daily at 6:00 AM",
             "Each quiz contains 10 carefully selected questions",
@@ -106,9 +107,10 @@ const EmptyState = ({ type = "no-quiz" }: EmptyStateProps) => {
         <Button 
           className="w-full h-12 text-base font-medium"
           size="lg"
+          onClick={onStartQuiz}
         >
+          <Play className="w-5 h-5 mr-2" />
           {content.buttonText}
-          <ArrowRight className="w-5 h-5 ml-2" />
         </Button>
 
         {/* Additional Actions */}
