@@ -4,7 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Clock, ArrowRight } from "lucide-react";
 
-// Mock quiz data
+// Mock quiz data - 10 questions for daily quiz
 const mockQuiz = [
   {
     id: 1,
@@ -29,6 +29,102 @@ const mockQuiz = [
     ],
     correctAnswer: 0,
     explanation: "Blue Economy refers to the sustainable use of ocean resources for economic growth, improved livelihoods, and jobs while preserving the health of ocean ecosystems."
+  },
+  {
+    id: 3,
+    question: "Which Article of the Indian Constitution deals with the Right to Constitutional Remedies?",
+    options: [
+      "Article 30",
+      "Article 32",
+      "Article 34",
+      "Article 36"
+    ],
+    correctAnswer: 1,
+    explanation: "Article 32 is known as the 'Heart and Soul' of the Constitution as it guarantees the right to constitutional remedies."
+  },
+  {
+    id: 4,
+    question: "The Goods and Services Tax (GST) was implemented in India in which year?",
+    options: [
+      "2016",
+      "2017",
+      "2018",
+      "2019"
+    ],
+    correctAnswer: 1,
+    explanation: "GST was implemented on July 1, 2017, replacing multiple indirect taxes with a unified tax system."
+  },
+  {
+    id: 5,
+    question: "Which of the following is NOT a Fundamental Right under the Indian Constitution?",
+    options: [
+      "Right to Equality",
+      "Right to Freedom",
+      "Right to Property",
+      "Right to Constitutional Remedies"
+    ],
+    correctAnswer: 2,
+    explanation: "Right to Property was removed as a Fundamental Right by the 44th Constitutional Amendment in 1978."
+  },
+  {
+    id: 6,
+    question: "The term 'Digital India' was launched in which year?",
+    options: [
+      "2014",
+      "2015",
+      "2016",
+      "2017"
+    ],
+    correctAnswer: 1,
+    explanation: "Digital India was launched on July 1, 2015, with the vision of transforming India into a digitally empowered society."
+  },
+  {
+    id: 7,
+    question: "Which committee recommended the establishment of the National Judicial Appointments Commission?",
+    options: [
+      "Sarkaria Commission",
+      "Justice J.S. Verma Committee",
+      "Administrative Reforms Commission",
+      "Law Commission"
+    ],
+    correctAnswer: 1,
+    explanation: "Justice J.S. Verma Committee recommended reforms in the higher judiciary including the NJAC."
+  },
+  {
+    id: 8,
+    question: "The 'Atmanirbhar Bharat' initiative focuses primarily on:",
+    options: [
+      "Self-reliance and reducing imports",
+      "Increasing agricultural productivity",
+      "Digital transformation",
+      "Infrastructure development"
+    ],
+    correctAnswer: 0,
+    explanation: "Atmanirbhar Bharat aims to make India self-reliant by reducing dependency on imports and boosting domestic manufacturing."
+  },
+  {
+    id: 9,
+    question: "Which of the following is the correct expansion of NITI Aayog?",
+    options: [
+      "National Institution for Transforming India",
+      "National Institute for Technology and Innovation",
+      "National Integration and Technology Initiative",
+      "National Innovation and Technology Institute"
+    ],
+    correctAnswer: 0,
+    explanation: "NITI Aayog stands for National Institution for Transforming India, which replaced the Planning Commission."
+  },
+  {
+    id: 10,
+    question: "The concept of 'One Nation, One Election' refers to:",
+    options: [
+      "Simultaneous elections to Lok Sabha and Vidhan Sabhas",
+      "Single ballot for all elections",
+      "Unified election commission",
+      "Common electoral roll"
+    ],
+    correctAnswer: 0,
+    explanation: "One Nation, One Election refers to conducting simultaneous elections to Lok Sabha and all State Legislative Assemblies."
   }
 ];
 
@@ -39,8 +135,8 @@ interface DailyQuizProps {
 const DailyQuiz = ({ onQuizComplete }: DailyQuizProps) => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
-  const [showFeedback, setShowFeedback] = useState(false);
   const [timeLeft, setTimeLeft] = useState(600); // 10 minutes
+  const [answers, setAnswers] = useState<(number | null)[]>(new Array(mockQuiz.length).fill(null));
   const [score, setScore] = useState(0);
 
   const question = mockQuiz[currentQuestion];
@@ -49,11 +145,11 @@ const DailyQuiz = ({ onQuizComplete }: DailyQuizProps) => {
 
   // Timer effect
   useEffect(() => {
-    if (timeLeft > 0 && !showFeedback) {
+    if (timeLeft > 0) {
       const timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000);
       return () => clearTimeout(timer);
     }
-  }, [timeLeft, showFeedback]);
+  }, [timeLeft]);
 
   const formatTime = (seconds: number) => {
     const minutes = Math.floor(seconds / 60);
@@ -62,29 +158,37 @@ const DailyQuiz = ({ onQuizComplete }: DailyQuizProps) => {
   };
 
   const handleAnswerSelect = (answerIndex: number) => {
-    if (!showFeedback) {
-      setSelectedAnswer(answerIndex);
-    }
-  };
-
-  const handleSubmitAnswer = () => {
-    if (selectedAnswer !== null) {
-      setShowFeedback(true);
-      if (selectedAnswer === question.correctAnswer) {
-        setScore(score + 1);
-      }
-    }
+    setSelectedAnswer(answerIndex);
   };
 
   const handleNextQuestion = () => {
+    if (selectedAnswer !== null) {
+      // Store the answer
+      const newAnswers = [...answers];
+      newAnswers[currentQuestion] = selectedAnswer;
+      setAnswers(newAnswers);
+    }
+
     if (isLastQuestion) {
+      // Calculate final score
+      let finalScore = 0;
+      const finalAnswers = [...answers];
+      if (selectedAnswer !== null) {
+        finalAnswers[currentQuestion] = selectedAnswer;
+      }
+      
+      finalAnswers.forEach((answer, index) => {
+        if (answer === mockQuiz[index].correctAnswer) {
+          finalScore++;
+        }
+      });
+      
+      setScore(finalScore);
       // Navigate to results screen
-      console.log("Quiz completed!", { score, total: mockQuiz.length });
       onQuizComplete();
     } else {
       setCurrentQuestion(currentQuestion + 1);
-      setSelectedAnswer(null);
-      setShowFeedback(false);
+      setSelectedAnswer(answers[currentQuestion + 1]);
     }
   };
 
@@ -125,13 +229,7 @@ const DailyQuiz = ({ onQuizComplete }: DailyQuizProps) => {
           {question.options.map((option, index) => {
             let optionClass = "quiz-option";
             
-            if (showFeedback) {
-              if (index === question.correctAnswer) {
-                optionClass += " correct";
-              } else if (index === selectedAnswer && index !== question.correctAnswer) {
-                optionClass += " incorrect";
-              }
-            } else if (selectedAnswer === index) {
+            if (selectedAnswer === index) {
               optionClass += " selected";
             }
 
@@ -140,7 +238,6 @@ const DailyQuiz = ({ onQuizComplete }: DailyQuizProps) => {
                 key={index}
                 onClick={() => handleAnswerSelect(index)}
                 className={optionClass}
-                disabled={showFeedback}
               >
                 <span className="font-medium text-sm text-muted-foreground mr-3">
                   {String.fromCharCode(65 + index)}.
@@ -150,43 +247,19 @@ const DailyQuiz = ({ onQuizComplete }: DailyQuizProps) => {
             );
           })}
         </div>
-
-        {/* Explanation (shown after answer) */}
-        {showFeedback && (
-          <Card className="bg-accent border-border">
-            <CardContent className="p-4">
-              <h3 className="font-medium text-foreground mb-2">
-                {selectedAnswer === question.correctAnswer ? "Correct!" : "Incorrect"}
-              </h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                {question.explanation}
-              </p>
-            </CardContent>
-          </Card>
-        )}
       </div>
 
       {/* Action Button */}
       <div className="p-6 pt-0">
-        {!showFeedback ? (
-          <Button
-            onClick={handleSubmitAnswer}
-            disabled={selectedAnswer === null}
-            className="w-full h-12 text-base font-medium"
-            size="lg"
-          >
-            Submit Answer
-          </Button>
-        ) : (
-          <Button
-            onClick={handleNextQuestion}
-            className="w-full h-12 text-base font-medium"
-            size="lg"
-          >
-            {isLastQuestion ? "View Results" : "Next Question"}
-            <ArrowRight className="w-5 h-5 ml-2" />
-          </Button>
-        )}
+        <Button
+          onClick={handleNextQuestion}
+          disabled={selectedAnswer === null}
+          className="w-full h-12 text-base font-medium"
+          size="lg"
+        >
+          {isLastQuestion ? "Finish Quiz" : "Next Question"}
+          <ArrowRight className="w-5 h-5 ml-2" />
+        </Button>
       </div>
     </div>
   );

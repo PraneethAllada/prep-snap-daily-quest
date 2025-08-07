@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { ArrowRight, Target, TrendingUp, Calendar } from "lucide-react";
+import PrepSnapLogo from "@/components/PrepSnapLogo";
 
 const onboardingSlides = [
   {
@@ -48,7 +49,7 @@ const Onboarding = ({ onGetStarted }: OnboardingProps) => {
       <div className="flex-1 flex flex-col justify-center items-center text-center">
         {/* Logo/Brand */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-primary mb-2">PrepSnap</h1>
+          <PrepSnapLogo size="lg" className="justify-center mb-2" />
           <p className="text-muted-foreground text-sm">UPSC Daily Quiz</p>
         </div>
 

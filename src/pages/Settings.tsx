@@ -29,6 +29,16 @@ const Settings = ({ onGoBack }: SettingsProps) => {
   const [dailyReminder, setDailyReminder] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
 
+  // Apply dark mode to document
+  const handleDarkModeToggle = (checked: boolean) => {
+    setDarkMode(checked);
+    if (checked) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  };
+
   // Mock user data
   const [userData, setUserData] = useState({
     name: "Priya Sharma",
@@ -171,7 +181,7 @@ const Settings = ({ onGoBack }: SettingsProps) => {
             </div>
             <Switch
               checked={darkMode}
-              onCheckedChange={setDarkMode}
+              onCheckedChange={handleDarkModeToggle}
             />
           </div>
 

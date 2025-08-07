@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Mail, Lock, User } from "lucide-react";
+import PrepSnapLogo from "@/components/PrepSnapLogo";
 
 interface AuthProps {
   onLogin: () => void;
@@ -34,7 +35,7 @@ const Auth = ({ onLogin }: AuthProps) => {
       <div className="w-full max-w-sm space-y-6">
         {/* Header */}
         <div className="text-center space-y-2">
-          <h1 className="text-3xl font-bold text-primary">PrepSnap</h1>
+          <PrepSnapLogo size="lg" className="justify-center" />
           <p className="text-muted-foreground">
             {isLogin ? "Welcome back" : "Start your UPSC journey"}
           </p>
