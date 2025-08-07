@@ -18,6 +18,7 @@ import {
   Phone,
   ArrowLeft
 } from "lucide-react";
+import PrepSnapLogo from "@/components/PrepSnapLogo";
 
 interface SettingsProps {
   onGoBack: () => void;
@@ -61,9 +62,12 @@ const Settings = ({ onGoBack }: SettingsProps) => {
   return (
     <div className="mobile-container p-6 space-y-6">
       {/* Header */}
-      <div className="space-y-2">
-        <h1 className="text-2xl font-bold text-foreground">Settings</h1>
-        <p className="text-muted-foreground">Manage your account and preferences</p>
+      <div className="text-center space-y-4">
+        <PrepSnapLogo size="md" className="justify-center" />
+        <div className="space-y-2">
+          <h1 className="text-2xl font-bold text-foreground">Settings</h1>
+          <p className="text-muted-foreground">Manage your account and preferences</p>
+        </div>
       </div>
 
       {/* Profile Section */}

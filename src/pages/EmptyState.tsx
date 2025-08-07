@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Calendar, Target, ArrowRight, Play } from "lucide-react";
+import PrepSnapLogo from "@/components/PrepSnapLogo";
 
 interface EmptyStateProps {
   type: "missed-day" | "no-quiz" | "first-time";
@@ -59,6 +60,9 @@ const EmptyState = ({ type = "no-quiz", onStartQuiz }: EmptyStateProps) => {
   return (
     <div className="mobile-container flex flex-col justify-center items-center p-6 min-h-screen">
       <div className="w-full max-w-sm space-y-6 text-center">
+        {/* Logo */}
+        <PrepSnapLogo size="md" className="justify-center" />
+        
         {/* Main Illustration */}
         <div className="space-y-4">
           <div className="w-24 h-24 mx-auto bg-accent rounded-2xl flex items-center justify-center">

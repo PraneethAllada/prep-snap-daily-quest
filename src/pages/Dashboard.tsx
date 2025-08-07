@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Calendar, TrendingUp, Target, Flame, Award, Clock, ArrowRight } from "lucide-react";
+import PrepSnapLogo from "@/components/PrepSnapLogo";
 
 // Mock data
 const mockData = {
@@ -42,9 +43,12 @@ const Dashboard = ({ onStartQuiz }: DashboardProps) => {
   return (
     <div className="mobile-container p-6 space-y-6">
       {/* Header */}
-      <div className="space-y-2">
-        <h1 className="text-2xl font-bold text-foreground">Dashboard</h1>
-        <p className="text-muted-foreground">Track your UPSC preparation progress</p>
+      <div className="text-center space-y-4">
+        <PrepSnapLogo size="md" className="justify-center" />
+        <div className="space-y-2">
+          <h1 className="text-2xl font-bold text-foreground">Dashboard</h1>
+          <p className="text-muted-foreground">Track your UPSC preparation progress</p>
+        </div>
       </div>
 
       {/* Today's Quiz Card */}

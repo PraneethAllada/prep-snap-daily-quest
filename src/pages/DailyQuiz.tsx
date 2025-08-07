@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Clock, ArrowRight } from "lucide-react";
+import PrepSnapLogo from "@/components/PrepSnapLogo";
 
 // Mock quiz data - 10 questions for daily quiz
 const mockQuiz = [
@@ -196,6 +197,9 @@ const DailyQuiz = ({ onQuizComplete }: DailyQuizProps) => {
     <div className="mobile-container flex flex-col min-h-screen">
       {/* Header with Timer and Progress */}
       <div className="p-4 bg-surface border-b border-border">
+        <div className="text-center mb-4">
+          <PrepSnapLogo size="sm" className="justify-center" />
+        </div>
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center space-x-2">
             <Clock className="w-4 h-4 text-muted-foreground" />

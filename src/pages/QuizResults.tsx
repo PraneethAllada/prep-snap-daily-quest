@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Trophy, Target, Flame, RotateCcw, Eye } from "lucide-react";
+import PrepSnapLogo from "@/components/PrepSnapLogo";
 
 // Mock results data
 const mockResults = {
@@ -38,9 +39,12 @@ const QuizResults = ({ onGoToDashboard }: QuizResultsProps) => {
   return (
     <div className="mobile-container p-6 space-y-6">
       {/* Header */}
-      <div className="text-center space-y-2">
-        <h1 className="text-2xl font-bold text-foreground">Quiz Complete!</h1>
-        <p className="text-muted-foreground">{getPerformanceMessage()}</p>
+      <div className="text-center space-y-4">
+        <PrepSnapLogo size="md" className="justify-center" />
+        <div className="space-y-2">
+          <h1 className="text-2xl font-bold text-foreground">Quiz Complete!</h1>
+          <p className="text-muted-foreground">{getPerformanceMessage()}</p>
+        </div>
       </div>
 
       {/* Main Score Card */}

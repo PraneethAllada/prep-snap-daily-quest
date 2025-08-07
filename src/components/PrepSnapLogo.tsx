@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import lightLogo from "@/assets/prepsnap-logo-light.png";
+import darkLogo from "@/assets/prepsnap-logo-dark.png";
 
 interface PrepSnapLogoProps {
   className?: string;
@@ -34,9 +36,11 @@ const PrepSnapLogo = ({ className = "", size = "md" }: PrepSnapLogoProps) => {
 
   return (
     <div className={`flex items-center ${className}`}>
-      <div className={`${sizeClasses[size]} flex items-center`}>
-        <span className="text-2xl font-bold text-foreground">PrepSnap</span>
-      </div>
+      <img 
+        src={isDark ? darkLogo : lightLogo} 
+        alt="PrepSnap" 
+        className={`${sizeClasses[size]} object-contain`}
+      />
     </div>
   );
 };
