@@ -52,23 +52,25 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Screen Navigation (for demo purposes) */}
-      <div className="fixed top-4 left-4 z-50 bg-surface p-2 rounded-lg border border-border shadow-lg">
-        <div className="text-xs text-muted-foreground mb-2">Demo Navigation:</div>
-        <div className="grid grid-cols-3 gap-1">
-          {Object.keys(screens).map((screen) => (
-            <Button
-              key={screen}
-              variant={currentScreen === screen ? "default" : "outline"}
-              size="sm"
-              className="text-xs h-6 px-2"
-              onClick={() => setCurrentScreen(screen)}
-            >
-              {screen}
-            </Button>
-          ))}
+      {/* Demo Navigation - Only show when not authenticated for testing */}
+      {!isAuthenticated && (
+        <div className="fixed top-4 left-4 z-50 bg-surface p-2 rounded-lg border border-border shadow-lg">
+          <div className="text-xs text-muted-foreground mb-2">Demo Navigation:</div>
+          <div className="grid grid-cols-3 gap-1">
+            {Object.keys(screens).map((screen) => (
+              <Button
+                key={screen}
+                variant={currentScreen === screen ? "default" : "outline"}
+                size="sm"
+                className="text-xs h-6 px-2"
+                onClick={() => setCurrentScreen(screen)}
+              >
+                {screen}
+              </Button>
+            ))}
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Current Screen */}
       <div className={showBottomNav ? "pb-20" : ""}>
