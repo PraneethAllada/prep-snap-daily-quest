@@ -16,10 +16,12 @@ const mockResults = {
 };
 
 interface QuizResultsProps {
+  answers: (number | null)[];
   onGoToDashboard: () => void;
+  onReviewAnswers: () => void;
 }
 
-const QuizResults = ({ onGoToDashboard }: QuizResultsProps) => {
+const QuizResults = ({ answers, onGoToDashboard, onReviewAnswers }: QuizResultsProps) => {
   const { score, total, streak, timeSpent, accuracy, previousBest } = mockResults;
   const percentage = Math.round((score / total) * 100);
   const isNewRecord = score > previousBest;
@@ -137,6 +139,7 @@ const QuizResults = ({ onGoToDashboard }: QuizResultsProps) => {
           variant="outline" 
           className="w-full h-12 text-base font-medium"
           size="lg"
+          onClick={onReviewAnswers}
         >
           <Eye className="w-5 h-5 mr-2" />
           Review Answers

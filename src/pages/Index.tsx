@@ -8,11 +8,13 @@ import Dashboard from "./Dashboard";
 import Settings from "./Settings";
 import EmptyState from "./EmptyState";
 import BottomNavigation from "@/components/BottomNavigation";
+import ReviewAnswers from "./ReviewAnswers";
 
 const Index = () => {
   const [currentScreen, setCurrentScreen] = useState<string>("onboarding");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [quizCompleted, setQuizCompleted] = useState(false);
+  const [quizAnswers, setQuizAnswers] = useState<(number | null)[]>([]);
 
   const handleNavigation = (screen: string) => {
     setCurrentScreen(screen);
@@ -23,8 +25,9 @@ const Index = () => {
     setCurrentScreen("dashboard");
   };
 
-  const handleQuizComplete = () => {
+  const handleQuizComplete = (answers?: (number | null)[]) => {
     setQuizCompleted(true);
+    if (answers) setQuizAnswers(answers);
     setCurrentScreen("results");
   };
 
@@ -32,12 +35,17 @@ const Index = () => {
     onboarding: <Onboarding onGetStarted={() => setCurrentScreen("auth")} />,
     auth: <Auth onLogin={handleLogin} />,
     "daily-quiz": <DailyQuiz onQuizComplete={handleQuizComplete} />,
-    results: <QuizResults onGoToDashboard={() => setCurrentScreen("dashboard")} />,
+    results: <QuizResults 
+      answers={quizAnswers}
+      onGoToDashboard={() => setCurrentScreen("dashboard")} 
+      onReviewAnswers={() => setCurrentScreen("review-answers")}
+    />,
     dashboard: <Dashboard onStartQuiz={() => setCurrentScreen("daily-quiz")} />,
     settings: <Settings onGoBack={() => setCurrentScreen("dashboard")} />,
     "empty-missed": <EmptyState type="missed-day" onStartQuiz={() => setCurrentScreen("daily-quiz")} />,
     "empty-no-quiz": <EmptyState type="no-quiz" onStartQuiz={() => setCurrentScreen("daily-quiz")} />,
-    "empty-first-time": <EmptyState type="first-time" onStartQuiz={() => setCurrentScreen("daily-quiz")} />
+    "empty-first-time": <EmptyState type="first-time" onStartQuiz={() => setCurrentScreen("daily-quiz")} />,
+    "review-answers": <ReviewAnswers answers={quizAnswers} onGoBack={() => setCurrentScreen("results")} />
   };
 
   const showBottomNav = isAuthenticated && !["onboarding", "auth"].includes(currentScreen);

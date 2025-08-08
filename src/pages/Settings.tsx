@@ -16,7 +16,9 @@ import {
   Edit3,
   Mail,
   Phone,
-  ArrowLeft
+  ArrowLeft,
+  Flame,
+  Target
 } from "lucide-react";
 import PrepSnapLogo from "@/components/PrepSnapLogo";
 
@@ -90,9 +92,17 @@ const Settings = ({ onGoBack }: SettingsProps) => {
             <div className="flex-1">
               <h3 className="font-semibold text-foreground">{userData.name}</h3>
               <p className="text-sm text-muted-foreground">{userData.email}</p>
-              <div className="flex space-x-4 mt-1 text-xs text-muted-foreground">
-                <span>{userData.streak} day streak</span>
-                <span>{userData.totalQuizzes} quizzes completed</span>
+              <div className="flex space-x-4 mt-2">
+                <div className="flex items-center space-x-1">
+                  <Flame className="w-4 h-4 text-streak" />
+                  <span className="text-sm font-medium text-streak">{userData.streak}</span>
+                  <span className="text-xs text-muted-foreground">day streak</span>
+                </div>
+                <div className="flex items-center space-x-1">
+                  <Target className="w-4 h-4 text-success" />
+                  <span className="text-sm font-medium text-success">{userData.totalQuizzes}</span>
+                  <span className="text-xs text-muted-foreground">quizzes</span>
+                </div>
               </div>
             </div>
             <Button

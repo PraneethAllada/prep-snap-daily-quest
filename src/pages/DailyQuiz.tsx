@@ -130,7 +130,7 @@ const mockQuiz = [
 ];
 
 interface DailyQuizProps {
-  onQuizComplete: () => void;
+  onQuizComplete: (answers: (number | null)[]) => void;
 }
 
 const DailyQuiz = ({ onQuizComplete }: DailyQuizProps) => {
@@ -160,6 +160,17 @@ const DailyQuiz = ({ onQuizComplete }: DailyQuizProps) => {
 
   const handleAnswerSelect = (answerIndex: number) => {
     setSelectedAnswer(answerIndex);
+    // Auto-save the answer
+    const newAnswers = [...answers];
+    newAnswers[currentQuestion] = answerIndex;
+    setAnswers(newAnswers);
+  };
+
+  const handlePreviousQuestion = () => {
+    if (currentQuestion > 0) {
+      setCurrentQuestion(currentQuestion - 1);
+      setSelectedAnswer(answers[currentQuestion - 1]);
+    }
   };
 
   const handleNextQuestion = () => {
@@ -186,7 +197,7 @@ const DailyQuiz = ({ onQuizComplete }: DailyQuizProps) => {
       
       setScore(finalScore);
       // Navigate to results screen
-      onQuizComplete();
+      onQuizComplete(finalAnswers);
     } else {
       setCurrentQuestion(currentQuestion + 1);
       setSelectedAnswer(answers[currentQuestion + 1]);
@@ -253,17 +264,28 @@ const DailyQuiz = ({ onQuizComplete }: DailyQuizProps) => {
         </div>
       </div>
 
-      {/* Action Button */}
-      <div className="p-6 pt-0">
-        <Button
-          onClick={handleNextQuestion}
-          disabled={selectedAnswer === null}
-          className="w-full h-12 text-base font-medium"
-          size="lg"
-        >
-          {isLastQuestion ? "Finish Quiz" : "Next Question"}
-          <ArrowRight className="w-5 h-5 ml-2" />
-        </Button>
+      {/* Action Buttons */}
+      <div className="p-6 pt-0 space-y-3">
+        <div className="flex gap-3">
+          <Button
+            onClick={handlePreviousQuestion}
+            disabled={currentQuestion === 0}
+            variant="outline"
+            className="flex-1 h-12 text-base font-medium"
+            size="lg"
+          >
+            Previous
+          </Button>
+          <Button
+            onClick={handleNextQuestion}
+            disabled={selectedAnswer === null}
+            className="flex-1 h-12 text-base font-medium"
+            size="lg"
+          >
+            {isLastQuestion ? "Finish Quiz" : "Next"}
+            <ArrowRight className="w-5 h-5 ml-2" />
+          </Button>
+        </div>
       </div>
     </div>
   );
