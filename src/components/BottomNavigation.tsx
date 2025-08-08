@@ -16,7 +16,7 @@ const BottomNavigation = ({ currentScreen, onNavigate }: BottomNavigationProps) 
 
   return (
     <div className="fixed bottom-0 left-0 right-0 bg-surface border-t border-border px-4 py-2 safe-bottom">
-      <div className="mobile-container flex justify-around items-center max-w-md mx-auto">
+      <div className="flex justify-around items-center w-full">
         {navItems.map((item) => {
           const Icon = item.icon;
           const isActive = currentScreen === item.id;

@@ -24,6 +24,7 @@ interface QuizResultsProps {
 const QuizResults = ({ answers, onGoToDashboard, onReviewAnswers }: QuizResultsProps) => {
   const { score, total, streak, timeSpent, accuracy, previousBest } = mockResults;
   const percentage = Math.round((score / total) * 100);
+  const earnedCredits = score === total ? 3 : 0; // 3 credits for perfect score
   const isNewRecord = score > previousBest;
 
   const getScoreColor = () => {
@@ -46,6 +47,13 @@ const QuizResults = ({ answers, onGoToDashboard, onReviewAnswers }: QuizResultsP
         <div className="space-y-2">
           <h1 className="text-2xl font-bold text-foreground">Quiz Complete!</h1>
           <p className="text-muted-foreground">{getPerformanceMessage()}</p>
+          {earnedCredits > 0 && (
+            <div className="bg-success/10 border border-success/20 rounded-lg p-3 mt-4">
+              <p className="text-success font-medium text-sm">
+                🎉 Perfect Score! You earned {earnedCredits} credits!
+              </p>
+            </div>
+          )}
         </div>
       </div>
 
