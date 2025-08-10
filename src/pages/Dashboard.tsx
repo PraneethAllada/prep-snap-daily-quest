@@ -79,7 +79,7 @@ const Dashboard = ({ onStartQuiz }: DashboardProps) => {
           
           {!todayQuiz.completed && (
             <Button className="w-full" size="lg" onClick={onStartQuiz}>
-              Start Today's Quiz
+              Start Today's Quiz — Earn ₹3 for perfect score
               <ArrowRight className="w-4 h-4 ml-2" />
             </Button>
           )}

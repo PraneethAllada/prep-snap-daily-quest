@@ -87,13 +87,13 @@ const Settings = ({ onGoBack }: SettingsProps) => {
             <span className="text-3xl font-bold text-primary">{userData.credits}</span>
             <div className="text-right">
               <p className="text-sm font-medium text-foreground">Available Credits</p>
-              <p className="text-xs text-muted-foreground">Earn 3 per perfect score</p>
+              <p className="text-xs text-muted-foreground">Earn 3 credits (₹3) per perfect score</p>
             </div>
           </div>
           <div className="bg-primary/10 rounded-lg p-3">
             <p className="text-sm text-primary font-medium">💰 How to earn credits:</p>
             <p className="text-xs text-muted-foreground mt-1">
-              Score 10/10 in daily quiz to earn 3 credits. Use credits for premium features!
+              Score 10/10 in daily quiz to earn 3 credits (₹3). Use credits for premium features!
             </p>
           </div>
         </CardContent>

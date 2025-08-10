@@ -47,10 +47,16 @@ const QuizResults = ({ answers, onGoToDashboard, onReviewAnswers }: QuizResultsP
         <div className="space-y-2">
           <h1 className="text-2xl font-bold text-foreground">Quiz Complete!</h1>
           <p className="text-muted-foreground">{getPerformanceMessage()}</p>
-          {earnedCredits > 0 && (
+          {earnedCredits > 0 ? (
             <div className="bg-success/10 border border-success/20 rounded-lg p-3 mt-4">
               <p className="text-success font-medium text-sm">
                 🎉 Perfect Score! You earned {earnedCredits} credits!
+              </p>
+            </div>
+          ) : (
+            <div className="bg-muted/40 border border-border rounded-lg p-3 mt-4">
+              <p className="text-sm text-muted-foreground">
+                No reward today — try again tomorrow.
               </p>
             </div>
           )}

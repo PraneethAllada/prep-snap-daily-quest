@@ -227,6 +227,9 @@ const DailyQuiz = ({ onQuizComplete }: DailyQuizProps) => {
           value={progress} 
           className="h-2 bg-muted [&>div]:bg-gradient-to-r [&>div]:from-progress [&>div]:to-progress"
         />
+        <div className="mt-3 bg-primary/10 border border-primary/20 rounded-md p-2 text-center">
+          <p className="text-xs font-medium text-primary">💰 Perfect Score Bonus: Earn ₹3 today</p>
+        </div>
       </div>
 
       {/* Question Content */}
@@ -236,6 +239,7 @@ const DailyQuiz = ({ onQuizComplete }: DailyQuizProps) => {
             <h2 className="text-lg font-medium text-foreground leading-relaxed">
               {question.question}
             </h2>
+            <p className="text-xs text-muted-foreground mt-2">Economy | August 10</p>
           </CardContent>
         </Card>
 
