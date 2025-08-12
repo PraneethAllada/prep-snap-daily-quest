@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Mail, Lock, User } from "lucide-react";
 import PrepSnapLogo from "@/components/PrepSnapLogo";
+import { supabase } from "@/lib/supabase";
 
 interface AuthProps {
   onLogin: () => void;
@@ -16,24 +17,45 @@ const Auth = ({ onLogin }: AuthProps) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [err, setErr] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  async function upsertProfile(userId: string, nameVal?: string) {
+    await supabase
+      .from("profiles")
+      .upsert({ user_id: userId, name: nameVal || null }, { onConflict: "user_id" });
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle authentication logic here
-    console.log(isLogin ? "Login" : "Signup", { email, password, name });
-    onLogin();
+    setErr(null);
+    setLoading(true);
+    try {
+      if (isLogin) {
+        const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+        if (error) throw error;
+        if (data.user) await upsertProfile(data.user.id);
+      } else {
+        const { data, error } = await supabase.auth.signUp({ email, password });
+        if (error) throw error;
+        if (data.user) await upsertProfile(data.user.id, name);
+      }
+      onLogin();
+    } catch (e: any) {
+      setErr(e.message || "Something went wrong");
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleGoogleAuth = () => {
-    // Handle Google authentication
-    console.log("Google auth");
-    onLogin();
+  // (Optional) Google OAuth later – needs provider config in Supabase dashboard
+  const handleGoogleAuth = async () => {
+    setErr("Google Sign-In not configured yet");
   };
 
   return (
     <div className="mobile-container flex flex-col justify-center items-center p-6">
       <div className="w-full max-w-sm space-y-6">
-        {/* Header */}
         <div className="text-center space-y-2">
           <PrepSnapLogo size="lg" className="justify-center" />
           <p className="text-muted-foreground">
@@ -41,20 +63,18 @@ const Auth = ({ onLogin }: AuthProps) => {
           </p>
         </div>
 
-        {/* Auth Form */}
         <Card className="border-border">
           <CardHeader className="space-y-1 pb-4">
             <h2 className="text-xl font-semibold text-center">
               {isLogin ? "Sign In" : "Create Account"}
             </h2>
           </CardHeader>
-          
           <CardContent className="space-y-4">
-            {/* Google Auth Button */}
             <Button
               variant="outline"
               className="w-full h-11"
               onClick={handleGoogleAuth}
+              disabled={loading}
             >
               <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24">
                 <path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -76,13 +96,12 @@ const Auth = ({ onLogin }: AuthProps) => {
               </div>
             </div>
 
-            {/* Email/Password Form */}
             <form onSubmit={handleSubmit} className="space-y-4">
               {!isLogin && (
                 <div className="space-y-2">
                   <Label htmlFor="name">Full Name</Label>
                   <div className="relative">
-                    <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                    <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                     <Input
                       id="name"
                       type="text"
@@ -99,7 +118,7 @@ const Auth = ({ onLogin }: AuthProps) => {
               <div className="space-y-2">
                 <Label htmlFor="email">Email</Label>
                 <div className="relative">
-                  <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                   <Input
                     id="email"
                     type="email"
@@ -115,7 +134,7 @@ const Auth = ({ onLogin }: AuthProps) => {
               <div className="space-y-2">
                 <Label htmlFor="password">Password</Label>
                 <div className="relative">
-                  <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                   <Input
                     id="password"
                     type="password"
@@ -128,12 +147,13 @@ const Auth = ({ onLogin }: AuthProps) => {
                 </div>
               </div>
 
-              <Button type="submit" className="w-full h-11">
-                {isLogin ? "Sign In" : "Create Account"}
+              {err && <p className="text-sm text-red-500">{err}</p>}
+
+              <Button type="submit" className="w-full h-11" disabled={loading}>
+                {loading ? "Please wait..." : isLogin ? "Sign In" : "Create Account"}
               </Button>
             </form>
 
-            {/* Toggle Auth Mode */}
             <div className="text-center text-sm">
               <span className="text-muted-foreground">
                 {isLogin ? "Don't have an account? " : "Already have an account? "}
